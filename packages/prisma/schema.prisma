@@ -30,7 +30,7 @@ model Zap {
 	id                String            @id @default(uuid())
 	userId            Int
 	user              User              @relation(fields: [userId], references: [id])
-  triggerId         String
+    triggerId         String
 	trigger           Trigger?
 	actions           Action[]
 	zapRuns           ZapRun[]
