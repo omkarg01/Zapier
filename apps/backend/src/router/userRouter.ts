@@ -4,11 +4,12 @@ import { json, z } from "zod"
 import { prisma } from "@repo/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
+import { authMiddleware } from "../authMiddleware";
 
 
-const userRouter = Router()
+const router = Router()
 
-userRouter.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
         const body = req.body;
         const parseBody = SignupSchema.parse(body);
@@ -48,7 +49,7 @@ userRouter.post("/signup", async (req, res) => {
     }
 })
 
-userRouter.post("/signin", async (req, res) => {
+router.post("/signin", async (req, res) => {
     try {
         const body = req.body;
         const parseBody = SigninSchema.parse(body);
@@ -71,7 +72,7 @@ userRouter.post("/signin", async (req, res) => {
 
         const key = process.env.JWT_PRIVATE_KEY as string;
 
-        let token = jwt.sign({ username: user.email }, key);
+        let token = jwt.sign({ username: user.email, id: user.id }, key);
 
         return res.status(200).json({token})
 
@@ -86,4 +87,26 @@ userRouter.post("/signin", async (req, res) => {
     }
 })
 
-export default userRouter;
+
+
+router.get("/", authMiddleware, async (req, res) => {
+    // TODO: Fix the type
+    // @ts-ignore
+    const id = req.id;
+    const user = await prisma.user.findFirst({
+        where: {
+            id
+        },
+        select: {
+            name: true,
+            email: true
+        }
+    });
+
+    return res.json({
+        user
+    });
+})
+
+
+export const userRouter = router;

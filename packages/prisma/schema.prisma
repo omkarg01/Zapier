@@ -21,7 +21,7 @@ model User {
 	email             String            @unique
 	password          String
 	createdAt         DateTime          @default(now())
-  zap               Zap[]
+  	zap               Zap[]
 }
 
 
@@ -30,7 +30,6 @@ model Zap {
 	id                String            @id @default(uuid())
 	userId            Int
 	user              User              @relation(fields: [userId], references: [id])
-    triggerId         String
 	trigger           Trigger?
 	actions           Action[]
 	zapRuns           ZapRun[]

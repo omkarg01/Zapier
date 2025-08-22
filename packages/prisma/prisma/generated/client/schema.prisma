@@ -24,13 +24,12 @@ model User {
 }
 
 model Zap {
-  id        String   @id @default(uuid())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  triggerId String
-  trigger   Trigger?
-  actions   Action[]
-  zapRuns   ZapRun[]
+  id      String   @id @default(uuid())
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
+  trigger Trigger?
+  actions Action[]
+  zapRuns ZapRun[]
 }
 
 model Trigger {
