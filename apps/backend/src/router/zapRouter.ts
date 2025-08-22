@@ -65,8 +65,16 @@ router.get('/', authMiddleware, async (req, res) => {
                 userId: userId,
             },
             include: {
-                trigger :true,
-                actions :true
+                trigger : {
+                    include : {
+                        availableTrigger: true
+                    }
+                },
+                actions : {
+                    include: {
+                        availableAction: true
+                    }
+                }
             }
         })
 
@@ -92,8 +100,16 @@ router.get('/:zapId', authMiddleware, async (req, res) => {
                 id: zapId
             },
             include: {
-                trigger :true,
-                actions :true
+                trigger : {
+                    include : {
+                        availableTrigger: true
+                    }
+                },
+                actions : {
+                    include: {
+                        availableAction: true
+                    }
+                }
             }
         })
 
